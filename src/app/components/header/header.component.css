@@ -1,0 +1,21 @@
+.icon-wrapper{
+    width: 40px;
+    line-height: 45px;
+    font-size: 40px;
+    /* Màu của icon */
+    color: red;
+    background: white;
+    /* 250ms để chuyển đổi color khi hover */
+    transition: 250ms all ease-in-out;
+    cursor: pointer;
+    margin-bottom: 20px;
+    margin-left: -10px;
+}
+
+.icon-wrapper:hover{
+    color: green;
+}
+
+app-todo-input{
+    width: 100%;
+}

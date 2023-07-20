@@ -1,0 +1,64 @@
+<!-- CSS từ class todo-item -->
+<!-- Nếu mouseover (di chuột lên trên) thì isHovered = true-->
+<!-- Nếu mouseout (di chuột ra) thì isHovered = false-->
+<div
+  class="todo-item d-flex justify-content-between align-items-center"
+  (mouseover)="isHovered = true"
+  (mouseout)="isHovered = false"
+>
+  <!-- Main -->
+  <div class="todo d-flex justify-content-between align-items-center">
+    <!-- Nút check box -->
+    <!-- gán id = todo.id -->
+    <!-- CSS bằng class: round-button -->
+    <!-- Nút tích hiện lên khi check = true -->
+    <!-- Khi checkbox thay đổi thì hàm changeTodoStatus() run  -->
+    <input
+      type="checkbox"
+      [id]="todo.id"
+      class="round-button"
+      [checked]="todo.isCompleted"
+      (change)="changeTodoStatus()"
+    />
+    <!-- [for]="todo.id": Liên kết với id của đối tượng todo,
+      đảm bảo rằng khi label được nhấp vào, 
+      nó sẽ kích hoạt đầu vào checkbox tương ứng. -->
+    <label [@fadeStrikeThrough]="todo.isCompleted ? 'completed' : 'active'" [for]="todo.id">{{ todo.content }}</label>
+  </div>
+
+  <!-- Thưc hiện chức năng Edit và Delete  -->
+  <div class="d-flex align-items-center">
+    <!-- Thực hiện Edit Task -->
+    <!-- Ấn thẻ span nếu isCompleted = true -->
+    <!-- active khi isHovered = true -->
+    <span
+      class="icon-wrapper edit-icon"
+      [hidden]="todo.isCompleted"
+      [ngClass]="{ active: isHovered }"
+    >
+      <!-- Event binding: khi click thì isEditing = true -->
+      <i class="eva eva-edit-outline" (click)="isEditing = true"></i>
+    </span>
+
+    <!-- Thực hiện Delete Task -->
+     <!-- active khi isHovered = true -->
+    <span class="icon-wrapper delete-icon" 
+      [ngClass]="{ active: isHovered }"
+    >
+      <!-- Event binding: khi click chạy hàm removeTodo()  -->
+      <i class="eva eva-close" (click)="removeTodo()"></i>
+    </span>
+  </div>
+
+  <!-- Modal Edit Task -->
+  <!-- Nếu isEditing = true thì hiện input  -->
+  <!-- (keyup)="submitEdit($event)": Định nghĩa một sự kiện 
+    khi người dùng thả phím trên bàn phím, 
+    gọi phương thức submitEdit() khi sự kiện này xảy ra. -->
+  <form class="edit-form" 
+    (keyup)="submitEdit($event)" 
+    *ngIf="isEditing"
+  >
+    <input type="text" name="editTodo" [(ngModel)]="todo.content" />
+  </form>
+</div>
