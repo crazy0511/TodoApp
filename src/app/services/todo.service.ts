@@ -10,14 +10,19 @@ import { LocalStorageService } from './local-storage.service';
 export class TodoService{
 
   // Lấy ra các key trong LocalStorage
-  // Được sử dụng để lưu trữ tên key để truy cập dữ liệu "to-do" trong localStorage
+  // Được sử dụng để lưu trữ tên key để truy cập dữ liệu Todo trong localStorage
   private static readonly TodoStorageKey = "todos";
 
+  // todos lấy ra Todo[] từ LocalStorage
   private todos!: Todo[];
-  // Mảng filterTodos
+  // Mảng filterTodos là Todo[] sau khi lọc
   private filterTodos!: Todo[];
+
+  // lengthSubject là độ dài của todos
   private lengthSubject: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  // displayTodosSubject là Todo[] được show
   private displayTodosSubject: BehaviorSubject<Todo[]> = new BehaviorSubject<Todo[]>([]);
+
   // currentFilter = Filter.All
   private currentFilter!: Filter;
 
@@ -38,16 +43,28 @@ export class TodoService{
 
   constructor(private storageService: LocalStorageService) {  }
 
-  // Lấy tất cả todo từ LocalStorage
+  // Trả về giá trị cho public: todo$, length$
   fetchFromLocalStorage(){
-    // Lấy Todo[] từ localStorage
+    // Lấy all Todo[] từ localStorage
     this.todos = this.storageService.getValue<Todo[]>(TodoService.TodoStorageKey) || [];
-    console.log(this.todos);
+    // getValue<T>(key:string): T{
+    //  const obj = JSON.parse(this.storage[key] || null);
+    //  return <T>obj;
+    // }
+
+    console.log('Todos', this.todos);
 
     // filterTodos = todos
     // thay đổi giá trị của mảng this.todos thì mảng this.filterTodos sẽ cập nhật theo
     this.filterTodos = [...this.todos];
+
     this.updateTodosData();
+    // Thực chất là cập nhật lại public: todo$, length$
+    // private updateTodosData(){
+    //  //displayTodosSubject, lengthSubject là BehaviorSubject
+    //  this.displayTodosSubject.next(this.filterTodos);
+    //  this.lengthSubject.next(this.todos.length);
+    // }
   }
 
   // Toggle all todos
@@ -64,6 +81,15 @@ export class TodoService{
     });
     console.log('Toggle all', this.todos);
     this.updateToLocalStorage();
+    // updateToLocalStorage(){
+    //   // Gọi hàm setObject từ LocalStorageService
+    //   this.storageService.setObject(TodoService.TodoStorageKey, this.todos);
+    //   // Gọi hàm filterTodo truyền vào 
+    //   // filter = this.currentFilter, isFiltering = false;
+    //   this.filterTodo(this.currentFilter, false);
+    //   // Cập nhật dữ liệu Todo[] và length
+    //   this.updateTodosData();
+    // }
   }
 
   // Add data
@@ -95,7 +121,6 @@ export class TodoService{
   // truyền vào filter = type
   filterTodo(filter: Filter, isFiltering: boolean = true){
     this.currentFilter = filter;
-    console.log('Filter gần đây nhất', this.currentFilter);
     switch(filter){
       // TH1: filter = Filter.Active
       case Filter.Active:
@@ -113,25 +138,28 @@ export class TodoService{
       case Filter.All:
         this.filterTodos = [...this.todos];
         break;
+
+      default: 
+        this.filterTodos = [...this.todos];
     }
-    console.log('currentFilter',this.currentFilter);
+    // console.log('currentFilter = ',this.currentFilter);
 
     // Nếu isFiltering = true thì Cập nhật dữ liệu Todo[] và length
     if(isFiltering){
       this.updateTodosData();
     }
-    console.log('isFiltering', isFiltering);
+    // console.log('isFiltering = ', isFiltering);
   }
 
   // Thay đổi trang thái 
   changeTodoStatus(id: number, isCompleted: boolean){
     // Tìm todo có id tương ứng
     const index = this.todos.findIndex(t => t.id === id);
-    console.log('index', index);
+    // console.log('index', index);
 
     // gọi todo có index cần tìm
     const todo = this.todos[index];
-    console.log('todo cần tìm', todo);
+    // console.log('todo cần tìm', todo);
 
     // gán lại isComppleted cho todo
     todo.isCompleted = isCompleted;

@@ -46,7 +46,9 @@ export class TodoItemComponent{
   changeTodoStatus(){
     // Phát ra todo với isComleted: true -> false, false -> true
     const newTodo = {...this.todo, isCompleted: !this.todo.isCompleted};
-    console.log('Emitting todo:', newTodo);
+    // console.log('Emitting todo:', newTodo);
+    
+    // changeStatus sẽ gửi newTodo cho todo-list component
     this.changeStatus.emit(newTodo);
   }
 

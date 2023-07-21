@@ -36,7 +36,6 @@ export class FooterComponent implements OnInit, OnDestroy{
     //   console.log('Giá trị của hasCompletes là: ', hasCompletes);
     // });
     
-
     // this.todoService.length$ phát ra giá trị mới,
     // subscriber sẽ được gọi và giá trị mới này sẽ 
     // được gán cho biến this.length.
@@ -73,8 +72,6 @@ export class FooterComponent implements OnInit, OnDestroy{
   clearCompleted(){
     this.todoService.clearCompleted();
   }
-
-  
 
   // Destroy khi không có Task nào
   ngOnDestroy(){

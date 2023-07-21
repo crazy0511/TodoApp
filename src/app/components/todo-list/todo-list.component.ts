@@ -5,23 +5,12 @@ import { TodoService } from 'src/app/services/todo.service';
 
 @Component({
   selector: 'app-todo-list',
-  template: `
-    <!-- Gọi đến từng todo-item component -->
-    <!-- Truyền giá trị của todo vào component <app-todo-item> -->
-    <!-- Đăng ký sự kiện changeStatus cho component <app-todo-item> -->
-    <!-- Đăng ký sự kiện editTodo cho component <app-todo-item> -->
-    <!-- Đăng ký sự kiện deleteTodo cho component <app-todo-item>. -->
-    <app-todo-item
-      *ngFor="let todo of todos$ | async"
-      [todo]="todo"
-      (changeStatus)="onChangeTodoStatus($event)"
-      (editTodo)="onEditTodo($event)"
-      (deleteTodo)="onDeleteTodo($event)"
-    >
-    </app-todo-item>
-  `
+  templateUrl: './todo-list.component.html',
+  styleUrls: ['./todo-list.component.css']
+  
 })
 export class TodoListComponent implements OnInit {
+  // Sử dụng todo$ từ todo$ của TodoService
   public todos$!: Observable<Todo[]>;
 
   constructor(private todoService: TodoService){}
@@ -32,7 +21,7 @@ export class TodoListComponent implements OnInit {
   }
 
   // Nhận sự kiện changeStatus thực hiện hàm onChangeTodoStatus()
-  // Nhận vào todo mới là $event = todo ở bên todo-item
+  // Nhận vào todo mới là $event = newTodo ở bên todo-item
   // Sau đó thực hiện changeTodoStatus ở TodoService
   onChangeTodoStatus(todo: Todo){
     // Truyền vào tham số id, isCompleted

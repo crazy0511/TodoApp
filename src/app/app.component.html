@@ -1,0 +1,17 @@
+<!-- Khung làm việc -->
+<div class="wrapper d-flex flex-column align-items-center w-100">
+    <!-- Dòng chữ TodoApp được CSS từ class: title -->
+    <h1 class="title">TODO App</h1>
+    <!-- Main -->
+    <div class="row justify-content-center w-100">
+        <!-- Main được CSS bằng class: todo-wrapper -->
+        <div class="todo-wrapper p-0 d-flex flex-column col-md-6 col-sm-8">
+            <!-- Thẻ app-header được CSS từ .todo-wrapper app-header  -->
+            <app-header></app-header>
+            <app-todo-list></app-todo-list>
+            <!-- async được sử dụng để đăng ký theo dõi sự thay đổi của biến hasTodo$ -->
+            <!-- nếu hasTodo$ = true thì chạy <app-footer> -->
+            <app-footer *ngIf="hasTodo$ | async"></app-footer>
+        </div>
+    </div>
+</div>
